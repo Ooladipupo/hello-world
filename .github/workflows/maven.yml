@@ -64,7 +64,7 @@ jobs:
       uses: sijomc/sonarscan-action@1.1
       with:
         host: ${{ vars.SONAR_URL }} 
-        login: ${{ secret.SONAR_TOKEN}}
+        login: ${{ secrets.SONAR_TOKEN}}
    
     
           

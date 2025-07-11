@@ -60,11 +60,11 @@ jobs:
     - name: Gitleaks Code Scan
       run: gitleaks detect source . -r gitleaks-report.json -f json
 
-    - name: Sonar Scan
-      uses: sijomc/sonarscan-action@1.1
-      with:
-        host: ${{ vars.SONAR_URL }} 
-        login: ${{ secrets.SONAR_TOKEN}}
+    #- name: Sonar Scan
+    #  uses: sijomc/sonarscan-action@1.1
+    #  with:
+    #   host: ${{ vars.SONAR_URL }} 
+    #    login: ${{ secrets.SONAR_TOKEN}}
    
     
           

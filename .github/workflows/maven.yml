@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v4.6.2
       with:
         name: myartifact 
-        path: target/*.jar
+        path: webapp/*.jar
 
 
   scantrivy:

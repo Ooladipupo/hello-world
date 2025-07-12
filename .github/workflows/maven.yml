@@ -60,7 +60,7 @@ jobs:
         tags: ola22/testing:July2025
 
 
-  scantrivy:
+  scan-with-trivy:
 
     runs-on: ubuntu-latest
     needs: [build]
@@ -89,6 +89,48 @@ jobs:
     #  with:
     #   host: ${{ vars.SONAR_URL }} 
     #    login: ${{ secrets.SONAR_TOKEN}}
+
+  deploy_to_KUbernetes:
+
+    runs-on: ubuntu-latest
+    needs: [build, 'scan-with-trivy']
+
+    steps:
+    - uses: actions/checkout@v4
+   
+    - name: Install AWS CLI
+      run: >
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        
+        unzip awscliv2.zip
+        
+        sudo ./aws/install
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4.1.0
+      with:
+        aws-region: eu-west-2
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+
+    - name: Kubectl set up
+      uses: Azure/setup-kubectl@v4.0.0
+      with:
+        version: latest
+
+    - name: configure kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.EKS_KUBEONFIG }}" > $HOME/.kube/config
+
+    - name: DEploy to EKS
+      run: |
+        kubectl apply -f ds.yaml
+
+          
+          
+
+    
    
     
           
